@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnimeDex — Explore Anime & Characters</title>
+  <link rel="stylesheet" href="AD-Anime.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-fire-flame-curved"></i>
+      </div>
+      <div>
+        <h1 class="brand-title">AnimeDex</h1>
+        <span class="brand-tag">AniList Explorer</span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button type="button" class="tab-btn active" data-tab="characters">
+        <i class="fa-solid fa-users"></i>
+        <span>Characters</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="trending">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Trending Anime</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="favorites">
+        <i class="fa-solid fa-heart"></i>
+        <span>Favorites</span>
+        <span class="badge-count" id="fav-count">0</span>
+      </button>
+    </nav>
+
+    <!-- User Profile & Actions -->
+    <div class="user-menu">
+      <div class="user-badge" id="user-badge">
+        <div class="avatar" id="user-avatar">A</div>
+        <div class="user-info">
+          <span class="user-name" id="user-name">Admin</span>
+          <span class="user-role" id="user-role">Administrator</span>
+        </div>
+      </div>
+      <button type="button" id="logout-btn" class="btn-ghost" title="Sign Out">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <span class="hide-sm">Logout</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Hero / Search Section -->
+    <section class="hero-section">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span class="hero-pill"><i class="fa-solid fa-sparkles"></i> Discover Anime Universe</span>
+          <h2>Explore Over 100,000+ Anime Characters & Series</h2>
+          <p>Powered by AniList GraphQL API with instant character data, media links, and personal favorites collection.</p>
+        </div>
+      </div>
+
+      <!-- Search Controls Bar -->
+      <div class="search-panel">
+        <form id="search-form" class="search-form">
+          <div class="search-type-select">
+            <select id="search-type" aria-label="Search Type">
+              <option value="characters">Characters</option>
+              <option value="anime">Anime Shows</option>
+            </select>
+          </div>
+          <div class="search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search by character or anime title (e.g. Gojo, Naruto, Attack on Titan)..."
+              autocomplete="off"
+            />
+            <button type="button" id="clear-search-btn" class="btn-clear" title="Clear input" style="display:none;">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <button type="submit" class="btn-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
+        </form>
+
+        <!-- Quick Tag Recommendations -->
+        <div class="quick-tags" id="quick-tags">
+          <span class="tags-label">Quick Search:</span>
+          <button type="button" class="tag-btn" data-query="Gojo">Gojo</button>
+          <button type="button" class="tag-btn" data-query="Luffy">Luffy</button>
+          <button type="button" class="tag-btn" data-query="Naruto">Naruto</button>
+          <button type="button" class="tag-btn" data-query="Levi">Levi</button>
+          <button type="button" class="tag-btn" data-query="Zoro">Zoro</button>
+          <button type="button" class="tag-btn" data-query="Makima">Makima</button>
+          <button type="button" class="tag-btn" data-query="Tanjiro">Tanjiro</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sub-header & Filters Bar -->
+    <div class="content-header">
+      <div class="content-heading">
+        <h3 id="section-title">Trending Characters</h3>
+        <span id="results-count" class="results-badge">Loading...</span>
+      </div>
+      <div class="content-actions">
+        <button type="button" id="refresh-btn" class="btn-refresh" title="Refresh current list">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <span>Refresh</span>
+        </button>
+        <label for="sort-select" class="sort-label">Sort:</label>
+        <select id="sort-select" class="sort-dropdown">
+          <option value="popular">Most Popular</option>
+          <option value="name">Alphabetical</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Status Message Banner -->
+    <div id="status" class="status-banner" style="display:none;"></div>
+
+    <!-- Cards Grid -->
+    <section id="results" class="results-grid"></section>
+
+    <!-- Load More Pagination Button -->
+    <div class="load-more-wrap" id="load-more-wrap" style="display:none;">
+      <button type="button" id="load-more-btn" class="btn-load-more">
+        <i class="fa-solid fa-arrows-rotate"></i> Load More
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Character & Anime Details Modal -->
+  <div id="detail-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+      <button type="button" id="modal-close-btn" class="modal-close" aria-label="Close modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="modal-content" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <i class="fa-solid fa-fire-flame-curved"></i> AnimeDex
+      </div>
+      <p>Data provided in real-time via <a href="https://anilist.gitbook.io/anilist-apiv2-docs/" target="_blank" rel="noopener">AniList GraphQL API</a>.</p>
+      <p class="copyright">Crafted for anime enthusiasts. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="AD-Anime.js"></script>
+</body>
+</html>

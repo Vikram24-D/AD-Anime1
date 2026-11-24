@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeDex — Create Account</title>
+  <link rel="stylesheet" href="Login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <div class="overlay">
+    <div class="card-box" style="width: 500px;">
+      
+      <div class="brand-badge">
+        <i class="fa-solid fa-sparkles" style="color:#c084fc; text-shadow:0 0 15px #c084fc;"></i>
+        <h1>Create Account</h1>
+      </div>
+      
+      <p class="subtitle">Join thousands of anime enthusiasts on AnimeDex</p>
+
+      <form id="signupForm">
+
+        <div class="inputBox">
+          <i class="fa-solid fa-user icon-prefix"></i>
+          <input type="text" id="fullname" placeholder="Full Name" required autocomplete="name">
+        </div>
+
+        <div class="inputBox">
+          <i class="fa-solid fa-envelope icon-prefix"></i>
+          <input type="email" id="email" placeholder="Email Address" required autocomplete="email">
+        </div>
+
+        <div class="inputBox">
+          <i class="fa-solid fa-at icon-prefix"></i>
+          <input type="text" id="username" placeholder="Otaku Username" required autocomplete="username">
+        </div>
+
+        <div class="inputBox">
+          <i class="fa-solid fa-lock icon-prefix"></i>
+          <input type="password" id="password" placeholder="Password (min 6 characters)" minlength="6" required autocomplete="new-password">
+          <i class="fa-solid fa-eye eye" id="eye-pass" title="Toggle password visibility"></i>
+        </div>
+
+        <div class="inputBox">
+          <i class="fa-solid fa-shield-halved icon-prefix"></i>
+          <input type="password" id="confirm" placeholder="Confirm Password" minlength="6" required autocomplete="new-password">
+          <i class="fa-solid fa-eye eye" id="eye-confirm" title="Toggle password visibility"></i>
+        </div>
+
+        <p id="message"></p>
+
+        <button type="submit" class="btn-login" style="margin-top: 8px;">JOIN ANIMEDEX</button>
+
+        <p class="signup-prompt" style="margin-top: 24px;">
+          Already have an account?
+          <a href="login.html">Sign In</a>
+        </p>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    // Password visibility toggles
+    function setupEye(eyeId, inputId) {
+      const eye = document.getElementById(eyeId);
+      const input = document.getElementById(inputId);
+      if (eye && input) {
+        eye.addEventListener("click", function() {
+          const isHidden = input.type === "password";
+          input.type = isHidden ? "text" : "password";
+          this.classList.toggle("fa-eye", !isHidden);
+          this.classList.toggle("fa-eye-slash", isHidden);
+        });
+      }
+    }
+    setupEye("eye-pass", "password");
+    setupEye("eye-confirm", "confirm");
+
+    // Signup form submission
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("fullname").value.trim();
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm").value;
+      const message = document.getElementById("message");
+
+      message.style.color = "#f87171";
+
+      if (password !== confirm) {
+        message.textContent = "✕ Passwords do not match.";
+        return;
+      }
+
+      if (password.length < 6) {
+        message.textContent = "✕ Password must be at least 6 characters.";
+        return;
+      }
+
+      let users = [];
+      try {
+        users = JSON.parse(localStorage.getItem("users") || "[]");
+      } catch (err) {
+        users = [];
+      }
+
+      // Check against existing users or demo admin
+      if (email === "admin@gmail.com" || users.some(u => u.email === email)) {
+        message.textContent = "✕ An account with this email already exists.";
+        return;
+      }
+
+      users.push({ name, email, username, password, role: "Otaku Member" });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      message.style.color = "#4ade80";
+      message.textContent = "✓ Account created successfully! Redirecting to sign in...";
+
+      const submitBtn = this.querySelector("button[type='submit']");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Redirecting...";
+      }
+
+      setTimeout(function () {
+        window.location.href = "login.html";
+      }, 900);
+    });
+  </script>
+</body>
+</html>

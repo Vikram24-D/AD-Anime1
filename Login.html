@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeDex — Sign In</title>
+  <link rel="stylesheet" href="Login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <div class="overlay">
+    <div class="card-box">
+      
+      <div class="brand-badge">
+        <i class="fa-solid fa-fire-flame-curved"></i>
+        <h1>AnimeDex</h1>
+      </div>
+      
+      <p class="subtitle">Enter the realm of legendary anime & characters</p>
+
+      <!-- Quick Demo Access Bar -->
+      <div class="demo-pill">
+        <span><i class="fa-solid fa-key" style="margin-right:6px;"></i><strong>Demo:</strong> admin@gmail.com</span>
+        <button type="button" id="demo-fill-btn">Auto Fill</button>
+      </div>
+
+      <form id="loginForm">
+
+        <div class="inputBox">
+          <i class="fa-solid fa-envelope icon-prefix"></i>
+          <input type="email" id="email" placeholder="Email Address" required autocomplete="username">
+        </div>
+
+        <div class="inputBox">
+          <i class="fa-solid fa-lock icon-prefix"></i>
+          <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+          <i class="fa-solid fa-eye eye" id="eye" title="Toggle password visibility"></i>
+        </div>
+
+        <p id="message"></p>
+
+        <div class="remember-row">
+          <label>
+            <input type="checkbox" id="remember">
+            Remember Me
+          </label>
+          <a href="#" id="forgot-link">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn-login">SIGN IN</button>
+
+        <div class="divider">
+          <span>or sign in with</span>
+        </div>
+
+        <div class="social">
+          <i class="fab fa-google" title="Google Sign-In (Demo)"></i>
+          <i class="fab fa-facebook-f" title="Facebook Sign-In (Demo)"></i>
+          <i class="fab fa-apple" title="Apple ID (Demo)"></i>
+        </div>
+
+        <p class="signup-prompt">
+          Don't have an account?
+          <a href="signup.html">Create Account</a>
+        </p>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script src="Login.js"></script>
+</body>
+</html>
